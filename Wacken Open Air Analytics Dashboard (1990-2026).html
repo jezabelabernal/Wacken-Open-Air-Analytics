@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wacken Open Air | Análisis Histórico Completo 1990–2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js v4.4.1 UMD -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Google Fonts: Cinzel, Inter y JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Cinzel', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        wacken: {
+                            black: '#09090b',
+                            dark: '#121216',
+                            card: '#17181f',
+                            border: '#272934',
+                            red: '#dc2626',
+                            blood: '#991b1b',
+                            amber: '#f59e0b',
+                            gold: '#fbbf24',
+                            steel: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #09090b;
+            color: #f3f4f6;
+            background-image: 
+                radial-gradient(circle at 12% 8%, rgba(220, 38, 38, 0.14) 0%, transparent 40%),
+                radial-gradient(circle at 88% 85%, rgba(245, 158, 11, 0.09) 0%, transparent 42%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #272934;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #dc2626;
+        }
+
+        .metal-card {
+            background: linear-gradient(155deg, #17181f 0%, #101116 100%);
+            border: 1px solid #272934;
+            box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.8);
+            transition: border-color 0.2s ease;
+        }
+
+        .metal-card:hover {
+            border-color: rgba(220, 38, 38, 0.45);
+        }
+
+        .glow-red {
+            text-shadow: 0 0 18px rgba(220, 38, 38, 0.55);
+        }
+
+        .glow-amber {
+            text-shadow: 0 0 14px rgba(245, 158, 11, 0.45);
+        }
+
+        /* Contenedores con altura explícita garantizada para Chart.js */
+        .chart-box-main {
+            position: relative;
+            width: 100%;
+            height: 390px;
+        }
+
+        .chart-box-weather {
+            position: relative;
+            width: 100%;
+            height: 340px;
+        }
+
+        .chart-box-genres {
+            position: relative;
+            width: 100%;
+            height: 380px;
+        }
+
+        .chart-box-bands {
+            position: relative;
+            width: 100%;
+            height: 480px;
+        }
+
+        @media (max-width: 640px) {
+            .chart-box-main { height: 310px; }
+            .chart-box-weather { height: 280px; }
+            .chart-box-genres { height: 330px; }
+            .chart-box-bands { height: 460px; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-red-600 selection:text-white">
+
+    <!-- Header / Navbar con Anclas Rápidas -->
+    <header class="border-b border-wacken-border bg-wacken-dark/95 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col lg:flex-row justify-between items-center gap-3">
+            <!-- Logo & Título -->
+            <div class="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-start">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-red-700 via-red-950 to-black border border-amber-500/40 flex items-center justify-center shadow-lg shadow-red-950/60 shrink-0">
+                        <i class="fa-solid fa-skull text-xl text-amber-400"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h1 class="font-display text-lg sm:text-2xl font-extrabold tracking-wider uppercase text-white glow-red">
+                                WACKEN <span class="text-red-500">ANALYTICS</span>
+                            </h1>
+                            <span class="px-2 py-0.5 text-[11px] font-mono font-bold uppercase bg-amber-500/15 text-amber-400 border border-amber-500/30 rounded">
+                                1990–2026
+                            </span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-wacken-steel">
+                            37 Años de Historia • 35 Ediciones • Faster, Harder, Louder
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Botón CSV móvil -->
+                <button onclick="exportToCSV()" class="lg:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-wacken-card hover:bg-red-950/60 text-gray-200 border border-wacken-border text-xs font-medium transition cursor-pointer">
+                    <i class="fa-solid fa-file-csv text-red-500"></i>
+                    <span>CSV</span>
+                </button>
+            </div>
+
+            <!-- Navegación Rápida por Anclas -->
+            <nav aria-label="Navegación de secciones" class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full lg:w-auto pb-1 lg:pb-0">
+                <a href="#sec-asistencia" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-wacken-black/80 hover:bg-red-600/20 text-gray-300 hover:text-white border border-wacken-border hover:border-red-500/40 whitespace-nowrap transition">
+                    <i class="fa-solid fa-users text-red-500 mr-1"></i>Asistencia
+                </a>
+                <a href="#sec-clima" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-wacken-black/80 hover:bg-sky-600/20 text-gray-300 hover:text-white border border-wacken-border hover:border-sky-500/40 whitespace-nowrap transition">
+                    <i class="fa-solid fa-cloud-showers-heavy text-sky-400 mr-1"></i>Rain or Shine
+                </a>
+                <a href="#sec-generos" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-wacken-black/80 hover:bg-amber-600/20 text-gray-300 hover:text-amber-300 border border-wacken-border hover:border-amber-500/40 whitespace-nowrap transition">
+                    <i class="fa-solid fa-compact-disc text-amber-400 mr-1"></i>Subgéneros
+                </a>
+                <a href="#sec-bandas" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-wacken-black/80 hover:bg-red-600/20 text-gray-300 hover:text-white border border-wacken-border hover:border-red-500/40 whitespace-nowrap transition">
+                    <i class="fa-solid fa-trophy text-amber-400 mr-1"></i>Frecuencia Bandas
+                </a>
+                <a href="#sec-archivo" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-wacken-black/80 hover:bg-red-600/20 text-gray-300 hover:text-white border border-wacken-border hover:border-red-500/40 whitespace-nowrap transition">
+                    <i class="fa-solid fa-table-list text-gray-400 mr-1"></i>Archivo
+                </a>
+                <button onclick="exportToCSV()" class="hidden lg:flex items-center gap-2 ml-2 px-3.5 py-1.5 rounded-lg bg-wacken-card hover:bg-red-950/60 text-gray-200 hover:text-amber-400 border border-wacken-border hover:border-red-500/50 text-xs font-semibold transition cursor-pointer shrink-0">
+                    <i class="fa-solid fa-file-csv text-red-500"></i>
+                    <span>Exportar CSV</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-10">
+
+        <!-- Toast Banner -->
+        <div id="toast-banner" class="hidden fixed bottom-5 right-5 z-50 bg-wacken-card border-l-4 border-amber-500 text-white px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-amber-400"></i>
+            <span id="toast-message" class="text-sm font-medium">Archivo CSV exportado correctamente.</span>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 1. KPIs HISTÓRICOS (1990 - 2026)                          -->
+        <!-- ========================================================= -->
+        <section aria-label="Indicadores Clave Históricos">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                <!-- KPI 1 -->
+                <div class="metal-card rounded-xl p-5 relative overflow-hidden">
+                    <div class="absolute -right-3 -top-3 text-red-600/10 text-6xl pointer-events-none">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <p class="text-xs font-mono uppercase tracking-wider text-wacken-steel font-semibold">Asistencia Estándar / Récord</p>
+                    <div class="mt-2 flex items-baseline gap-2">
+                        <span class="font-display text-2xl sm:text-3xl font-extrabold text-white">85,000</span>
+                        <span class="text-xs font-mono font-bold text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/30">~100k en 2022</span>
+                    </div>
+                    <p class="mt-2 text-xs text-gray-400 leading-relaxed">
+                        De <strong class="text-gray-200">~800 fans</strong> en la cantera de 1990 al aforo actual (+10,500% de crecimiento).
+                    </p>
+                </div>
+
+                <!-- KPI 2 -->
+                <div class="metal-card rounded-xl p-5 relative overflow-hidden">
+                    <div class="absolute -right-3 -top-3 text-amber-500/10 text-6xl pointer-events-none">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <p class="text-xs font-mono uppercase tracking-wider text-wacken-steel font-semibold">Ediciones Celebradas</p>
+                    <div class="mt-2 flex items-baseline gap-2">
+                        <span class="font-display text-2xl sm:text-3xl font-extrabold text-white">35 Ediciones</span>
+                        <span class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">1990–2026</span>
+                    </div>
+                    <p class="mt-2 text-xs text-gray-400 leading-relaxed">
+                        37 años de historia (pausa presencial en <strong class="text-gray-200">2020–2021</strong> por COVID-19).
+                    </p>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="metal-card rounded-xl p-5 relative overflow-hidden">
+                    <div class="absolute -right-3 -top-3 text-red-600/10 text-6xl pointer-events-none">
+                        <i class="fa-solid fa-guitar"></i>
+                    </div>
+                    <p class="text-xs font-mono uppercase tracking-wider text-wacken-steel font-semibold">Expansión del Cartel</p>
+                    <div class="mt-2 flex items-baseline gap-2">
+                        <span class="font-display text-2xl sm:text-3xl font-extrabold text-white">6 → 220+</span>
+                        <span class="text-xs font-mono font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20">Bandas/Ed.</span>
+                    </div>
+                    <p class="mt-2 text-xs text-gray-400 leading-relaxed">
+                        De <strong class="text-gray-200">6 bandas locales</strong> en 1990 a más de 220 artistas en 9 escenarios.
+                    </p>
+                </div>
+
+                <!-- KPI 4 -->
+                <div class="metal-card rounded-xl p-5 relative overflow-hidden">
+                    <div class="absolute -right-3 -top-3 text-amber-500/10 text-6xl pointer-events-none">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <p class="text-xs font-mono uppercase tracking-wider text-wacken-steel font-semibold">Récord de Sold Out</p>
+                    <div class="mt-2 flex items-baseline gap-2">
+                        <span class="font-display text-2xl sm:text-3xl font-extrabold text-amber-400 glow-amber">4.5 Horas</span>
+                        <span class="text-xs font-mono font-bold text-gray-300 bg-gray-700/40 px-2 py-0.5 rounded border border-gray-600/40">Ed. 2024</span>
+                    </div>
+                    <p class="mt-2 text-xs text-gray-400 leading-relaxed">
+                        85,000 entradas agotadas en 4.5h (2024) y 5h (2023); <strong class="text-gray-200">19 ediciones</strong> agotadas seguidas.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 2. GRÁFICA 1: EVOLUCIÓN DE ASISTENCIA Y CARTEL (1990-2026)-->
+        <!-- ========================================================= -->
+        <section id="sec-asistencia" class="metal-card rounded-xl p-5 sm:p-6 scroll-mt-24">
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 border-b border-wacken-border pb-4">
+                <div>
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
+                        <h2 class="font-display text-lg sm:text-2xl font-bold uppercase tracking-wide text-white">
+                            1. Evolución Histórica de Asistencia y Cartel (1990–2026)
+                        </h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-wacken-steel mt-1">
+                        Comparativa entre el crecimiento del público (barras) y el número de bandas programadas por edición (línea dorada).
+                    </p>
+                </div>
+
+                <!-- Controles de Rango Temporal y Métrica -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex items-center gap-1 bg-wacken-black p-1 rounded-lg border border-wacken-border">
+                        <button id="btn-range-all" onclick="setTimeRange('all')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold transition bg-amber-500 text-black shadow cursor-pointer">
+                            1990–2026 (Todo)
+                        </button>
+                        <button id="btn-range-early" onclick="setTimeRange('early')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer">
+                            1990–2005 (Fundacional)
+                        </button>
+                        <button id="btn-range-modern" onclick="setTimeRange('modern')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer">
+                            2006–2026 (Moderna)
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-1 bg-wacken-black p-1 rounded-lg border border-wacken-border">
+                        <button id="btn-mode-total" onclick="setAttendanceMode('total')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold transition bg-red-600 text-white shadow cursor-pointer">
+                            Asistencia Total
+                        </button>
+                        <button id="btn-mode-sold" onclick="setAttendanceMode('sold')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer">
+                            Entradas Vendidas
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-box-main">
+                <canvas id="attendanceChart"></canvas>
+            </div>
+
+            <!-- Hitos Históricos -->
+            <div class="mt-4 pt-4 border-t border-wacken-border/60 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs text-gray-400">
+                <div class="flex items-start gap-2 bg-wacken-black/70 p-2.5 rounded-lg border border-wacken-border/50">
+                    <span class="px-1.5 py-0.5 rounded bg-amber-950 text-amber-400 font-mono font-bold border border-amber-800/50 shrink-0">1990–92</span>
+                    <span>Inicia con 800 fans y 6 bandas; en 1992 llega <strong>Saxon</strong> como primer gran headliner internacional.</span>
+                </div>
+                <div class="flex items-start gap-2 bg-wacken-black/70 p-2.5 rounded-lg border border-wacken-border/50">
+                    <span class="px-1.5 py-0.5 rounded bg-red-950 text-red-400 font-mono font-bold border border-red-800/50 shrink-0">1998–06</span>
+                    <span>Salto europeo (20k en 1998) hasta lograr el primer <strong>Sold Out oficial</strong> en 2006 (62,500 fans).</span>
+                </div>
+                <div class="flex items-start gap-2 bg-wacken-black/70 p-2.5 rounded-lg border border-wacken-border/50">
+                    <span class="px-1.5 py-0.5 rounded bg-gray-800 text-gray-300 font-mono font-bold border border-gray-600/50 shrink-0">2020–22</span>
+                    <span>Pausa COVID-19 (2020–21) seguida del récord histórico de <strong>~100,000 personas totales</strong> en 2022.</span>
+                </div>
+                <div class="flex items-start gap-2 bg-wacken-black/70 p-2.5 rounded-lg border border-wacken-border/50">
+                    <span class="px-1.5 py-0.5 rounded bg-sky-950 text-sky-300 font-mono font-bold border border-sky-800/50 shrink-0">2023–26</span>
+                    <span>Límite de 61k en 2023 por lluvias torrenciales; consolidación de 85,000 fans hasta el 35º Aniversario en 2026.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 3. GRÁFICA 2: METEOROLOGÍA RAIN OR SHINE (1990 - 2026)    -->
+        <!-- ========================================================= -->
+        <section id="sec-clima" class="metal-card rounded-xl p-5 sm:p-6 scroll-mt-24">
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 border-b border-wacken-border pb-4">
+                <div>
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-6 bg-sky-500 rounded-sm"></span>
+                        <h2 class="font-display text-lg sm:text-2xl font-bold uppercase tracking-wide text-white">
+                            2. Meteorología Histórica: Rain or Shine (1990–2026)
+                        </h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-wacken-steel mt-1">
+                        Registro climático edición por edición en Schleswig-Holstein: olas de calor con polvo vs. los 7 diluvios de barro legendarios.
+                    </p>
+                </div>
+
+                <!-- Filtros Meteorológicos -->
+                <div class="flex flex-wrap items-center gap-1 bg-wacken-black p-1 rounded-lg border border-wacken-border self-start xl:self-center">
+                    <button id="btn-weather-all" onclick="setWeatherFilter('all')" class="px-3 py-1.5 rounded-md text-xs font-semibold transition bg-sky-600 text-white shadow cursor-pointer">
+                        Todas (37)
+                    </button>
+                    <button id="btn-weather-rain" onclick="setWeatherFilter('rain')" class="px-3 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer">
+                        <i class="fa-solid fa-cloud-showers-heavy mr-1 text-sky-400"></i>Con Lluvia (15)
+                    </button>
+                    <button id="btn-weather-dry" onclick="setWeatherFilter('dry')" class="px-3 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer">
+                        <i class="fa-solid fa-sun mr-1 text-amber-400"></i>Secas / Polvo (20)
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3 Mini-KPIs Climáticos -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-wacken-black/80 border border-amber-500/25 rounded-xl p-4 flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl shrink-0">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-mono uppercase tracking-wider text-wacken-steel font-semibold">Ediciones Secas (Shine)</p>
+                        <div class="flex items-baseline gap-2 mt-0.5">
+                            <span class="font-display text-xl font-extrabold text-amber-400">20 Ediciones</span>
+                            <span class="text-xs font-mono font-bold text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded">57.1%</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-0.5">Destacan olas de calor como 2003, 2018 (35°C) y 2024.</p>
+                    </div>
+                </div>
+
+                <div class="bg-wacken-black/80 border border-sky-500/25 rounded-xl p-4 flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 text-xl shrink-0">
+                        <i class="fa-solid fa-cloud-rain"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-mono uppercase tracking-wider text-wacken-steel font-semibold">Ediciones con Lluvia (Rain)</p>
+                        <div class="flex items-baseline gap-2 mt-0.5">
+                            <span class="font-display text-xl font-extrabold text-sky-400">15 Ediciones</span>
+                            <span class="text-xs font-mono font-bold text-sky-300 bg-sky-500/10 px-1.5 py-0.5 rounded">42.9%</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-0.5">Incluye chubascos puntuales, tormentas y barro profundo.</p>
+                    </div>
+                </div>
+
+                <div class="bg-wacken-black/80 border border-red-500/30 rounded-xl p-4 flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-lg bg-red-600/15 border border-red-500/35 flex items-center justify-center text-red-500 text-xl shrink-0">
+                        <i class="fa-solid fa-boot"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-mono uppercase tracking-wider text-wacken-steel font-semibold">Los 7 Diluvios Legendarios</p>
+                        <div class="mt-0.5">
+                            <span class="font-mono text-xs sm:text-sm font-bold text-red-400">1990 • 2002 • 2005 • 2007 • 2012 • 2015 • 2023</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-0.5">Ediciones históricas donde las botas de agua fueron obligatorias.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Gráfica de Barras Climáticas + Donut Proporción -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div class="lg:col-span-9">
+                    <div class="chart-box-weather">
+                        <canvas id="weatherChart"></canvas>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-gray-300 bg-wacken-black/70 px-3 py-2 rounded-lg border border-wacken-border/50">
+                        <span class="font-mono font-bold text-gray-400 uppercase">Escala:</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-amber-500 inline-block"></span> 1: Seco / Sol</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-sky-400 inline-block"></span> 2: Lluvia Ligera</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-blue-600 inline-block"></span> 3: Lluvia Intensa / Barro</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-red-600 border border-amber-300 inline-block"></span> 4: Diluvio Histórico</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-slate-700 inline-block"></span> 0: Cancelado (COVID)</span>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 bg-wacken-black/80 border border-wacken-border rounded-xl p-4 flex flex-col items-center justify-between h-full">
+                    <div class="text-center">
+                        <h3 class="font-display text-sm font-bold uppercase tracking-wider text-white">
+                            Proporción Rain vs. Shine
+                        </h3>
+                        <p class="text-xs text-wacken-steel mt-0.5">35 ediciones celebradas</p>
+                    </div>
+                    <div class="relative w-44 h-44 my-3">
+                        <canvas id="weatherDonutChart"></canvas>
+                    </div>
+                    <div class="w-full pt-2.5 border-t border-wacken-border/60 text-xs space-y-1.5">
+                        <div class="flex justify-between text-amber-400 font-semibold">
+                            <span>☀️ Shine (Secas):</span>
+                            <span class="font-mono">20 (57.1%)</span>
+                        </div>
+                        <div class="flex justify-between text-sky-400 font-semibold">
+                            <span>🌧️ Rain (Lluvia):</span>
+                            <span class="font-mono">15 (42.9%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 4. GRÁFICA 3: DISTRIBUCIÓN DE SUBGÉNEROS MUSICALES        -->
+        <!-- ========================================================= -->
+        <section id="sec-generos" class="metal-card rounded-xl p-5 sm:p-6 scroll-mt-24">
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 border-b border-wacken-border pb-4">
+                <div>
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-6 bg-amber-500 rounded-sm"></span>
+                        <h2 class="font-display text-lg sm:text-2xl font-bold uppercase tracking-wide text-white">
+                            3. Distribución de Subgéneros Musicales en el Cartel (1990–2026)
+                        </h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-wacken-steel mt-1">
+                        Composición estilística de las bandas programadas en Wacken. Haz clic o pasa el cursor sobre cada género para ver su historia y bandas clave.
+                    </p>
+                </div>
+
+                <!-- Controles de Era y Tipo de Vista -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <!-- Selector de Era -->
+                    <div class="flex items-center gap-1 bg-wacken-black p-1 rounded-lg border border-wacken-border">
+                        <button id="btn-genre-era-all" onclick="setGenreEra('all')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold bg-red-600 text-white shadow transition cursor-pointer">
+                            Histórico (1990–2026)
+                        </button>
+                        <button id="btn-genre-era-classic" onclick="setGenreEra('classic')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">
+                            Era Clásica (1990–2005)
+                        </button>
+                        <button id="btn-genre-era-modern" onclick="setGenreEra('modern')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">
+                            Era Moderna (2006–2026)
+                        </button>
+                    </div>
+
+                    <!-- Toggle Donut / Barras -->
+                    <div class="flex items-center gap-1 bg-wacken-black p-1 rounded-lg border border-wacken-border">
+                        <button id="btn-genre-view-doughnut" onclick="setGenreChartType('doughnut')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold bg-amber-500 text-black shadow transition cursor-pointer">
+                            <i class="fa-solid fa-chart-pie mr-1"></i>Vista Donut
+                        </button>
+                        <button id="btn-genre-view-bar" onclick="setGenreChartType('bar')" class="px-2.5 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">
+                            <i class="fa-solid fa-chart-bar mr-1"></i>Barras Horizontales
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de 12 columnas: Gráfica grande (7 cols) + Panel Interactivo de Detalle (5 cols) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                <!-- Contenedor del Gráfico de Subgéneros -->
+                <div class="lg:col-span-7 bg-wacken-black/60 border border-wacken-border/70 rounded-xl p-4 flex flex-col justify-center">
+                    <div class="chart-box-genres">
+                        <canvas id="genreChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Panel Lateral Interactivo del Subgénero Seleccionado -->
+                <div class="lg:col-span-5 flex flex-col justify-between bg-wacken-black/90 border border-red-900/40 rounded-xl p-5">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3 pb-3 border-b border-wacken-border">
+                            <span class="text-xs font-mono uppercase tracking-wider text-wacken-steel">Ficha del Subgénero</span>
+                            <span id="genre-detail-pct" class="px-2.5 py-1 text-xs font-mono font-bold rounded bg-red-600/20 text-red-400 border border-red-500/30">
+                                18.5% del cartel
+                            </span>
+                        </div>
+
+                        <h3 id="genre-detail-title" class="font-display text-lg sm:text-xl font-extrabold text-amber-400 uppercase tracking-wide mb-2">
+                            Heavy Metal Tradicional & NWOBHM
+                        </h3>
+
+                        <p id="genre-detail-desc" class="text-xs sm:text-sm text-gray-300 leading-relaxed mb-5">
+                            La piedra angular de Wacken desde el debut internacional de Saxon en 1992. Agrupa a las grandes leyendas británicas y alemanas que encabezan el Faster & Harder Stage.
+                        </p>
+
+                        <div class="mb-4">
+                            <p class="text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                                <i class="fa-solid fa-star text-amber-400 mr-1.5"></i>Bandas Emblemáticas en W:O:A:
+                            </p>
+                            <div id="genre-detail-bands" class="flex flex-wrap gap-2">
+                                <!-- Badges generados por JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selector rápido tipo píldoras de todos los géneros de la era actual -->
+                    <div class="pt-4 border-t border-wacken-border/70">
+                        <p class="text-[11px] font-mono uppercase text-gray-500 mb-2">Selecciona un género para inspeccionar:</p>
+                        <div id="genre-quick-pills" class="flex flex-wrap gap-1.5">
+                            <!-- Botones rápidos generados por JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 5. GRÁFICA 4: FRECUENCIA DE PARTICIPACIÓN DE BANDAS       -->
+        <!-- ========================================================= -->
+        <section id="sec-bandas" class="metal-card rounded-xl p-5 sm:p-6 scroll-mt-24">
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 border-b border-wacken-border pb-4">
+                <div>
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
+                        <h2 class="font-display text-lg sm:text-2xl font-bold uppercase tracking-wide text-white">
+                            4. Frecuencia de Participación de Bandas (Salón de la Fama W:O:A)
+                        </h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-wacken-steel mt-1">
+                        Ranking de las bandas y artistas con mayor número de apariciones oficiales en la historia del festival, codificadas por subgénero.
+                    </p>
+                </div>
+
+                <!-- Selector de Filtro del Ranking -->
+                <div class="flex flex-wrap items-center gap-1 bg-wacken-black p-1 rounded-lg border border-wacken-border self-start xl:self-center">
+                    <button id="btn-rank-all" onclick="setBandRankingFilter('all')" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-amber-500 text-black shadow transition cursor-pointer">
+                        Top 16 Histórico (1990–2026)
+                    </button>
+                    <button id="btn-rank-90s" onclick="setBandRankingFilter('90s')" class="px-3 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">
+                        Top Leyendas Años 90
+                    </button>
+                    <button id="btn-rank-modern" onclick="setBandRankingFilter('modern')" class="px-3 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">
+                        Top Era Moderna (2006–2026)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Leyenda de Colores por Subgénero en el Ranking -->
+            <div class="flex flex-wrap items-center gap-3 mb-4 text-xs bg-wacken-black/70 px-3.5 py-2.5 rounded-lg border border-wacken-border/60">
+                <span class="font-mono font-bold text-gray-400 uppercase">Código por Subgénero:</span>
+                <span class="flex items-center gap-1.5 text-gray-200"><span class="w-3 h-3 rounded-sm bg-[#dc2626] inline-block"></span> Heavy Metal</span>
+                <span class="flex items-center gap-1.5 text-gray-200"><span class="w-3 h-3 rounded-sm bg-[#f59e0b] inline-block"></span> Power / Speed Metal</span>
+                <span class="flex items-center gap-1.5 text-gray-200"><span class="w-3 h-3 rounded-sm bg-[#ea580c] inline-block"></span> Thrash Metal</span>
+                <span class="flex items-center gap-1.5 text-gray-200"><span class="w-3 h-3 rounded-sm bg-[#991b1b] inline-block"></span> Death / Melodic Death</span>
+                <span class="flex items-center gap-1.5 text-gray-200"><span class="w-3 h-3 rounded-sm bg-[#10b981] inline-block"></span> Folk / Medieval Metal</span>
+                <span class="flex items-center gap-1.5 text-gray-200"><span class="w-3 h-3 rounded-sm bg-[#a855f7] inline-block"></span> Hard Rock / Especiales</span>
+            </div>
+
+            <!-- Contenedor de altura fija 480px para barras horizontales -->
+            <div class="chart-box-bands bg-wacken-black/50 border border-wacken-border/60 rounded-xl p-3 sm:p-4">
+                <canvas id="bandsBarChart"></canvas>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-wacken-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-gray-400">
+                <span><i class="fa-solid fa-crown text-amber-400 mr-1.5"></i><strong>Mambo Kurt (23)</strong> y <strong>Skyline (17)</strong> encabezan las tradiciones residentes, mientras que <strong>Saxon (16)</strong> lidera el ranking de bandas internacionales.</span>
+                <span class="font-mono text-gray-500">Incluye confirmaciones 2026</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 6. TABLA BUSCABLE: ARCHIVO HISTÓRICO DE BANDAS (26 BANDAS)-->
+        <!-- ========================================================= -->
+        <section id="sec-archivo" class="metal-card rounded-xl p-5 sm:p-6 scroll-mt-24">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 border-b border-wacken-border pb-4">
+                <div>
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-6 bg-amber-500 rounded-sm"></span>
+                        <h2 class="font-display text-lg sm:text-2xl font-bold uppercase tracking-wide text-white">
+                            5. Archivo Histórico de Bandas Recurrentes (1990–2026)
+                        </h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-wacken-steel mt-1">
+                        Explora las 26 bandas con mayor huella en la historia de Wacken: filtra por nombre, subgénero o década de actividad.
+                    </p>
+                </div>
+
+                <!-- Controles de Búsqueda y Filtros -->
+                <div class="flex flex-col sm:flex-row flex-wrap gap-2.5">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                        <input 
+                            type="text" 
+                            id="band-search" 
+                            oninput="filterBandsTable()" 
+                            placeholder="Buscar banda, país o año..." 
+                            class="w-full sm:w-52 pl-8 pr-3 py-2 bg-wacken-black border border-wacken-border rounded-lg text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition"
+                        >
+                    </div>
+
+                    <select 
+                        id="genre-filter" 
+                        onchange="filterBandsTable()" 
+                        class="px-3 py-2 bg-wacken-black border border-wacken-border rounded-lg text-xs sm:text-sm text-gray-200 focus:outline-none focus:border-amber-500 transition cursor-pointer"
+                    >
+                        <option value="ALL">Todos los Subgéneros</option>
+                        <option value="Heavy Metal">Heavy Metal / Tradicional</option>
+                        <option value="Thrash Metal">Thrash & Speed Metal</option>
+                        <option value="Power Metal">Power & Symphonic Metal</option>
+                        <option value="Death Metal">Death & Melodic Death</option>
+                        <option value="Folk Metal">Folk, Medieval & Viking</option>
+                        <option value="Hard Rock">Hard Rock / Especiales</option>
+                    </select>
+
+                    <select 
+                        id="decade-filter" 
+                        onchange="filterBandsTable()" 
+                        class="px-3 py-2 bg-wacken-black border border-wacken-border rounded-lg text-xs sm:text-sm text-gray-200 focus:outline-none focus:border-amber-500 transition cursor-pointer"
+                    >
+                        <option value="ALL">Todas las Décadas</option>
+                        <option value="1990s">Años 90 (1990–1999)</option>
+                        <option value="2000s">Años 2000 (2000–2009)</option>
+                        <option value="2010s">Años 2010 (2010–2019)</option>
+                        <option value="2020s">Años 2020 (2022–2026)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabla Responsiva -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-wacken-border text-xs font-mono uppercase tracking-wider text-wacken-steel bg-wacken-black/70">
+                            <th class="py-3 px-3 sm:px-4 rounded-tl-lg">#</th>
+                            <th class="py-3 px-3 sm:px-4">Banda / Artista</th>
+                            <th class="py-3 px-3 sm:px-4">País</th>
+                            <th class="py-3 px-3 sm:px-4">Subgénero Principal</th>
+                            <th class="py-3 px-3 sm:px-4 text-center">Debut</th>
+                            <th class="py-3 px-3 sm:px-4 text-center">Shows</th>
+                            <th class="py-3 px-3 sm:px-4 rounded-tr-lg">Ediciones Destacadas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bands-table-body" class="divide-y divide-wacken-border/50 text-xs sm:text-sm">
+                        <!-- Filas inyectadas por JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mensaje sin resultados -->
+            <div id="no-results-msg" class="hidden py-8 text-center text-gray-400">
+                <i class="fa-solid fa-guitar text-3xl text-gray-600 mb-2"></i>
+                <p class="text-sm">No se encontraron bandas que coincidan con los filtros seleccionados.</p>
+                <button onclick="resetFilters()" class="mt-3 px-3 py-1.5 text-xs bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-600 hover:text-white transition cursor-pointer">
+                    Restablecer filtros
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-wacken-border bg-wacken-dark py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-wacken-steel">
+            <div class="flex items-center gap-2">
+                <span class="font-display font-bold text-gray-200 tracking-wider uppercase">WACKEN OPEN AIR • 1990–2026</span>
+                <span>|</span>
+                <span>See You In Wacken, Rain Or Shine!</span>
+            </div>
+            <p class="text-center sm:text-right">
+                Archivo histórico compilado (1990–2026). Incluye pausa presencial COVID-19 (2020–2021).
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- JAVASCRIPT: DATOS Y CONFIGURACIÓN DE LAS 5 GRÁFICAS       -->
+    <!-- ========================================================= -->
+    <script>
+        // ==========================================
+        // 1. DATASET HISTÓRICO ANUAL (1990 - 2026)
+        // ==========================================
+        const historicalData = [
+            { year: '1990', era: 'early', attendanceTotal: 800, ticketsSold: 800, bands: 6, rained: true, weatherLevel: 4, weatherLabel: 'Diluvio Histórico / Barro Extremo', weatherNote: 'Lluvia torrencial inaugural en la cantera de grava; nacimiento del espíritu "Rain or Shine".', note: 'Edición inaugural con 6 bandas locales (Skyline, Wizzard, 5th Avenue, Ax \'n Sex, Mottek, Sacred Season).' },
+            { year: '1991', era: 'early', attendanceTotal: 1300, ticketsSold: 1300, bands: 7, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol y Buen Tiempo', weatherNote: 'Fin de semana despejado y seco en el segundo año del festival.', note: 'Segunda edición local en la cantera de Wacken con 7 bandas.' },
+            { year: '1992', era: 'early', attendanceTotal: 3500, ticketsSold: 3500, bands: 26, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol y Calor', weatherNote: 'Clima cálido y seco para recibir a Saxon y Blind Guardian.', note: 'Salto internacional con Saxon como primer gran cabeza de cartel y Blind Guardian.' },
+            { year: '1993', era: 'early', attendanceTotal: 3500, ticketsSold: 3500, bands: 32, rained: true, weatherLevel: 2, weatherLabel: 'Lluvia Ligera / Chaparrones', weatherNote: 'Lluvias intermitentes típicas del verano del norte alemán sin barro grave.', note: 'Consolidación con Doro, Fates Warning y Torfrock.' },
+            { year: '1994', era: 'early', attendanceTotal: 4500, ticketsSold: 4500, bands: 29, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol y Polvo', weatherNote: 'Verano caluroso y seco en Schleswig-Holstein durante el 5º Aniversario.', note: '5º Aniversario con Paul Di\'Anno\'s Killers, U.K. Subs y Rausch.' },
+            { year: '1995', era: 'early', attendanceTotal: 5000, ticketsSold: 5000, bands: 33, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Soleado', weatherNote: 'Excelente clima veraniego durante los dos días de conciertos.', note: 'Presencia de Tiamat, Kreator, D:A:D y Pretty Maids.' },
+            { year: '1996', era: 'early', attendanceTotal: 8000, ticketsSold: 8000, bands: 32, rained: true, weatherLevel: 3, weatherLabel: 'Lluvia Intensa / Barro Moderado', weatherNote: 'Fuertes chubascos y bajada de temperaturas con zonas embarradas.', note: 'Crecimiento del 60% en público; actúan Kreator, Böhse Onkelz y Gorefest.' },
+            { year: '1997', era: 'early', attendanceTotal: 10000, ticketsSold: 10000, bands: 47, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol y Polvo', weatherNote: 'Sol radiante y mucho polvo en el estreno de Motörhead en Wacken.', note: 'Se superan los 10,000 asistentes con Motörhead, U.D.O., Dimmu Borgir e In Flames.' },
+            { year: '1998', era: 'early', attendanceTotal: 20000, ticketsSold: 20000, bands: 71, rained: true, weatherLevel: 2, weatherLabel: 'Lluvia Ligera / Puntual', weatherNote: 'Llovizna pasajera el viernes por la noche; terreno mayormente firme.', note: 'Explosión internacional: se duplica el público (20k) con Blind Guardian, Savatage e Iced Earth.' },
+            { year: '1999', era: 'early', attendanceTotal: 22000, ticketsSold: 22000, bands: 81, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Calor Veraniego', weatherNote: 'Clima seco y cálido para celebrar el 10º Aniversario con Scorpions.', note: '10º Aniversario del festival con Scorpions, Mercyful Fate y HammerFall.' },
+            { year: '2000', era: 'early', attendanceTotal: 25000, ticketsSold: 25000, bands: 69, rained: true, weatherLevel: 3, weatherLabel: 'Lluvia Intensa / Barro Moderado', weatherNote: 'Tormentas de verano dejaron barro considerable frente a los escenarios.', note: 'Cambio de milenio con Venom, Nightwish, Rose Tattoo y Dee Snider.' },
+            { year: '2001', era: 'early', attendanceTotal: 25000, ticketsSold: 25000, bands: 79, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Templado', weatherNote: 'Fin de semana mayormente despejado y seco sin incidentes climáticos.', note: 'Actúan Nightwish, Motörhead, Saxon, Wasp e In Flames.' },
+            { year: '2002', era: 'early', attendanceTotal: 27500, ticketsSold: 27500, bands: 80, rained: true, weatherLevel: 4, weatherLabel: 'Diluvio Histórico / Barro Extremo', weatherNote: 'Lluvias torrenciales previas convirtieron el camping en un barrizal mítico.', note: 'Blind Guardian, Bruce Dickinson, Sabbat, Kreator y Children of Bodom.' },
+            { year: '2003', era: 'early', attendanceTotal: 30000, ticketsSold: 30000, bands: 69, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Ola de Calor', weatherNote: 'Ola de calor europea de 2003: sol intenso, más de 32°C y nubes de polvo.', note: 'Slayer, Twisted Sister, Running Wild, In Flames y Stratovarius.' },
+            { year: '2004', era: 'early', attendanceTotal: 48000, ticketsSold: 33000, bands: 72, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol y Calor', weatherNote: 'Tiempo seco y soleado durante el 15º Aniversario con Böhse Onkelz y Dio.', note: '15º Aniversario (33k entradas de pago / 48k personas totales) con Böhse Onkelz y Dio.' },
+            { year: '2005', era: 'early', attendanceTotal: 40000, ticketsSold: 40000, bands: 65, rained: true, weatherLevel: 4, weatherLabel: 'Diluvio Histórico / Barro Extremo', weatherNote: 'Uno de los barrizales más recordados de la década; tractores rescatando coches.', note: 'Nightwish, Accept, Machine Head, Apocalyptica y Kreator.' },
+            { year: '2006', era: 'modern', attendanceTotal: 62500, ticketsSold: 62500, bands: 56, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol Radiante', weatherNote: 'Clima seco y caluroso en el primer Sold Out oficial del festival.', note: 'Primer SOLD OUT oficial previo al inicio con Scorpions, Motörhead y Whitesnake.' },
+            { year: '2007', era: 'modern', attendanceTotal: 72500, ticketsSold: 60000, bands: 75, rained: true, weatherLevel: 4, weatherLabel: 'Diluvio Histórico / "Wacken Mud"', weatherNote: 'Famoso "Wacken Mud" 2007: diluvio previo obligó a retrasar la apertura del camping.', note: '60,000 entradas vendidas + acreditados y locales; Blind Guardian, Saxon e In Flames.' },
+            { year: '2008', era: 'modern', attendanceTotal: 75000, ticketsSold: 75000, bands: 71, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol y Polvo', weatherNote: 'Sol espléndido y ambiente seco para el histórico debut de Iron Maiden.', note: 'Debut histórico de Iron Maiden en Wacken; agotado con meses de antelación.' },
+            { year: '2009', era: 'modern', attendanceTotal: 75000, ticketsSold: 75000, bands: 80, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Templado', weatherNote: 'Clima agradable y seco en el 20º Aniversario con Heaven & Hell y Motörhead.', note: '20º Aniversario con Heaven & Hell, Motörhead, Machine Head y Volbeat.' },
+            { year: '2010', era: 'modern', attendanceTotal: 82500, ticketsSold: 75000, bands: 121, rained: true, weatherLevel: 2, weatherLabel: 'Lluvia Ligera / Chaparrones', weatherNote: 'Chubascos breves el jueves y viernes; el recinto drenó bien sin grandes barrizales.', note: 'Se superan las 120 bandas; Iron Maiden, Alice Cooper y Slayer.' },
+            { year: '2011', era: 'modern', attendanceTotal: 85870, ticketsSold: 75000, bands: 125, rained: true, weatherLevel: 3, weatherLabel: 'Lluvia Intensa / Barro Moderado', weatherNote: 'Lluvias fuertes el viernes dejaron barro pesado en los accesos al Infield.', note: 'Ozzy Osbourne, Judas Priest, Motörhead y Blind Guardian.' },
+            { year: '2012', era: 'modern', attendanceTotal: 85000, ticketsSold: 75000, bands: 136, rained: true, weatherLevel: 4, weatherLabel: 'Diluvio Histórico / Tormenta Jueves', weatherNote: 'Gran tormenta eléctrica y lluvia torrencial el jueves; barro profundo todo el finde.', note: 'Scorpions, Volbeat, Machine Head, Amon Amarth y Dimmu Borgir.' },
+            { year: '2013', era: 'modern', attendanceTotal: 84500, ticketsSold: 75000, bands: 138, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Calor y Tormenta Final', weatherNote: 'Tres días de intenso calor y polvo (solo llovió al desmontar el domingo).', note: 'Rammstein, Deep Purple, Alice Cooper y Nightwish.' },
+            { year: '2014', era: 'modern', attendanceTotal: 84500, ticketsSold: 75000, bands: 131, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol y Polvo', weatherNote: 'Clima seco y soleado durante el 25º Aniversario del festival.', note: '25º Aniversario (Sold out en 43h) con Accept, Motörhead, Slayer y Megadeth.' },
+            { year: '2015', era: 'modern', attendanceTotal: 84500, ticketsSold: 75000, bands: 155, rained: true, weatherLevel: 4, weatherLabel: 'Diluvio Histórico / Récord de Barro', weatherNote: 'Lluvia incesante durante días: barro hasta las rodillas; impulsó el sistema de drenaje.', note: 'Sold out en menos de 12 horas; Savatage & Trans-Siberian Orchestra y Judas Priest.' },
+            { year: '2016', era: 'modern', attendanceTotal: 84500, ticketsSold: 75000, bands: 150, rained: true, weatherLevel: 3, weatherLabel: 'Lluvia Intensa / Barro Moderado', weatherNote: 'Lluvias intermitentes y barro notable, aunque mejor gestionado que en 2015.', note: 'Iron Maiden, Blind Guardian, Twisted Sister y tributo oficial a Lemmy.' },
+            { year: '2017', era: 'modern', attendanceTotal: 85000, ticketsSold: 75000, bands: 168, rained: true, weatherLevel: 2, weatherLabel: 'Lluvia Ligera / Estreno Drenaje', weatherNote: 'Chubascos moderados; el nuevo drenaje subterráneo del Infield funcionó con éxito.', note: 'Estreno del nuevo drenaje subterráneo; Volbeat, Megadeth, Alice Cooper y Avantasia.' },
+            { year: '2018', era: 'modern', attendanceTotal: 85000, ticketsSold: 75000, bands: 197, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Ola de Calor 35°C y Polvo', weatherNote: 'Ola de calor histórica de hasta 35°C; nubes de polvo obligaron a regar el recinto.', note: 'Judas Priest, Nightwish, Helloween Pumpkins United y Danzig.' },
+            { year: '2019', era: 'modern', attendanceTotal: 85000, ticketsSold: 75000, bands: 219, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Templado (Alerta breve)', weatherNote: 'Clima mayormente seco y agradable (breve evacuación preventiva de 45 min por tormenta lejana).', note: '30º Aniversario con Sabaton, Slayer (gira despedida), Parkway Drive y Demons & Wizards.' },
+            { year: '2020', era: 'modern', attendanceTotal: 0, ticketsSold: 0, bands: 0, rained: null, weatherLevel: 0, weatherLabel: 'Cancelado (COVID-19)', weatherNote: 'Edición presencial cancelada por pandemia; celebrado online (Wacken World Wide).', note: 'CANCELADO por pandemia COVID-19 (Celebrado en streaming como Wacken World Wide).' },
+            { year: '2021', era: 'modern', attendanceTotal: 0, ticketsSold: 0, bands: 0, rained: null, weatherLevel: 0, weatherLabel: 'Cancelado (COVID-19)', weatherNote: 'Edición presencial cancelada por restricciones sanitarias.', note: 'CANCELADO por restricciones sanitarias COVID-19.' },
+            { year: '2022', era: 'modern', attendanceTotal: 100000, ticketsSold: 83400, bands: 215, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Sol Perfecto Post-Pandemia', weatherNote: 'Clima espectacular, seco y soleado durante los 4 días ante ~100,000 asistentes.', note: 'Récord total de ~100,000 personas (83.4k pago + Wacken Wednesday) con Slipknot y Judas Priest.' },
+            { year: '2023', era: 'modern', attendanceTotal: 61000, ticketsSold: 85000, bands: 210, rained: true, weatherLevel: 4, weatherLabel: 'Diluvio Histórico / Cierre de Accesos', weatherNote: 'Lluvias récord en julio inundaron los campings; se cerró el acceso a vehículos y se limitó a 61k fans.', note: 'Sold out en 5h (85k vendidas), pero lluvias extremas limitaron el acceso físico a ~61,000 fans.' },
+            { year: '2024', era: 'modern', attendanceTotal: 85000, ticketsSold: 85000, bands: 215, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Calor y Sol Radiante', weatherNote: 'Revancha climática total tras 2023: sol radiante, calor y terreno 100% seco.', note: 'Récord absoluto de Sold Out en 4.5 horas (85,000 entradas); Scorpions, Korn y Amon Amarth.' },
+            { year: '2025', era: 'modern', attendanceTotal: 85000, ticketsSold: 85000, bands: 220, rained: true, weatherLevel: 2, weatherLabel: 'Lluvia Ligera / Chubascos Puntuales', weatherNote: 'Chubascos ligeros pasajeros típicos del norte alemán; excelente estado del césped.', note: 'Guns N\' Roses, Machine Head, Gojira y Papa Roach ante 85,000 metalheads.' },
+            { year: '2026', era: 'modern', attendanceTotal: 85000, ticketsSold: 85000, bands: 220, rained: false, weatherLevel: 1, weatherLabel: 'Seco / Clima Templado y Despejado', weatherNote: 'Clima templado y seco ideal para celebrar el 35º Aniversario del festival.', note: '35º Aniversario del festival con Def Leppard, Judas Priest, In Flames y Powerwolf.' }
+        ];
+
+        // ==========================================
+        // 2. DATASET DE SUBGÉNEROS MUSICALES POR ERA
+        // ==========================================
+        const genresByEra = {
+            all: [
+                {
+                    name: 'Heavy Metal Tradicional & NWOBHM',
+                    shortName: 'Heavy Metal Tradicional',
+                    percentage: 18.5,
+                    color: '#dc2626',
+                    desc: 'La piedra angular de Wacken desde el debut internacional de Saxon en 1992. Agrupa a las grandes leyendas británicas y alemanas que encabezan el Faster & Harder Stage.',
+                    bands: ['Saxon', 'Judas Priest', 'Iron Maiden', 'Doro', 'Accept', 'U.D.O.', 'Skyline']
+                },
+                {
+                    name: 'Death Metal & Melodic Death',
+                    shortName: 'Death / Melodic Death',
+                    percentage: 15.4,
+                    color: '#991b1b',
+                    desc: 'Crecimiento imparable desde finales de los 90 gracias a la escena de Gotemburgo (In Flames, Amon Amarth) y el Death Metal técnico y brutal norteamericano.',
+                    bands: ['Amon Amarth', 'In Flames', 'Arch Enemy', 'Cannibal Corpse', 'Children of Bodom', 'Carcass']
+                },
+                {
+                    name: 'Power Metal & Speed Metal',
+                    shortName: 'Power / Speed Metal',
+                    percentage: 14.2,
+                    color: '#f59e0b',
+                    desc: 'Uno de los géneros más coreados por el público alemán, impulsado por la escuela teutona de los 90 y las producciones épicas modernas.',
+                    bands: ['Blind Guardian', 'Helloween', 'Sabaton', 'Powerwolf', 'Grave Digger', 'Rage', 'Gamma Ray']
+                },
+                {
+                    name: 'Thrash Metal & Groove',
+                    shortName: 'Thrash Metal',
+                    percentage: 13.8,
+                    color: '#ea580c',
+                    desc: 'Presencia constante desde 1995 con el Big Four alemán (Kreator, Sodom, Destruction, Tankard) y los gigantes estadounidenses.',
+                    bands: ['Kreator', 'Sodom', 'Slayer', 'Destruction', 'Megadeth', 'Overkill', 'Anthrax']
+                },
+                {
+                    name: 'Folk, Viking & Medieval Metal',
+                    shortName: 'Folk / Viking / Medieval',
+                    percentage: 12.6,
+                    color: '#10b981',
+                    desc: 'Identidad distintiva de Wacken con escenario temático propio (Wackinger Village) y el auge del rock medieval alemán.',
+                    bands: ['Subway to Sally', 'In Extremo', 'Torfrock', 'Korpiklaani', 'Eluveitie', 'Saltatio Mortis']
+                },
+                {
+                    name: 'Black Metal & Extreme Metal',
+                    shortName: 'Black / Extreme Metal',
+                    percentage: 9.5,
+                    color: '#6366f1',
+                    desc: 'Protagonista de las sesiones nocturnas desde los años 90 con bandas sinfónicas y escandinavas.',
+                    bands: ['Dimmu Borgir', 'Immortal', 'Emperor', 'Mayhem', 'Behemoth', 'Gorgoroth']
+                },
+                {
+                    name: 'Metalcore, Modern & Nu Metal',
+                    shortName: 'Metalcore / Modern / Nu',
+                    percentage: 8.5,
+                    color: '#06b6d4',
+                    desc: 'Relevo generacional incorporado con fuerza en los últimos 15 años hasta alcanzar puestos de cabeza de cartel.',
+                    bands: ['Parkway Drive', 'Heaven Shall Burn', 'Slipknot', 'Korn', 'Machine Head', 'Architects']
+                },
+                {
+                    name: 'Hard Rock, Punk & Crossover',
+                    shortName: 'Hard Rock / Punk / Esp.',
+                    percentage: 7.5,
+                    color: '#a855f7',
+                    desc: 'Desde instituciones como Motörhead, Scorpions y Guns N\' Roses hasta shows de culto como Mambo Kurt y Böhse Onkelz.',
+                    bands: ['Motörhead', 'Scorpions', 'Mambo Kurt', 'Onkel Tom', 'Volbeat', 'Alice Cooper']
+                }
+            ],
+            classic: [
+                {
+                    name: 'Heavy Metal Tradicional & NWOBHM',
+                    shortName: 'Heavy Metal Tradicional',
+                    percentage: 26.0,
+                    color: '#dc2626',
+                    desc: 'En la etapa 1990–2005 dominó el Heavy Metal europeo clásico con Saxon, Doro, U.D.O., Accept y las bandas pioneras de 1990.',
+                    bands: ['Saxon', 'Doro', 'U.D.O.', 'Accept', 'Skyline', 'Wizzard', 'Pretty Maids']
+                },
+                {
+                    name: 'Power Metal & Speed Metal',
+                    shortName: 'Power / Speed Metal',
+                    percentage: 20.5,
+                    color: '#f59e0b',
+                    desc: 'Edad de oro del Power Metal alemán y finlandés en los escenarios principales de Wacken.',
+                    bands: ['Blind Guardian', 'Grave Digger', 'Rage', 'Gamma Ray', 'Stratovarius', 'Nightwish', 'Iced Earth']
+                },
+                {
+                    name: 'Thrash Metal Clásico',
+                    shortName: 'Thrash Metal',
+                    percentage: 18.0,
+                    color: '#ea580c',
+                    desc: 'Fuerte protagonismo del Thrash teutón y clásico desde mediados de los años 90.',
+                    bands: ['Kreator', 'Sodom', 'Destruction', 'Slayer', 'Overkill', 'Tankard', 'Onkel Tom']
+                },
+                {
+                    name: 'Death Metal Pionero',
+                    shortName: 'Death / Melodic Death',
+                    percentage: 12.5,
+                    color: '#991b1b',
+                    desc: 'Primeras grandes invasiones de Death europeo y americano con In Flames, Cannibal Corpse e Hypocrisy.',
+                    bands: ['In Flames', 'Cannibal Corpse', 'Hypocrisy', 'Tiamat', 'Gorefest', 'Children of Bodom']
+                },
+                {
+                    name: 'Black Metal Escandinavo',
+                    shortName: 'Black / Extreme Metal',
+                    percentage: 9.0,
+                    color: '#6366f1',
+                    desc: 'Consolidación del Black Metal en Wacken a partir de 1997 con Dimmu Borgir e Immortal.',
+                    bands: ['Dimmu Borgir', 'Immortal', 'Emperor', 'Mayhem', 'Dark Funeral']
+                },
+                {
+                    name: 'Folk & Medieval Alemán',
+                    shortName: 'Folk / Viking / Medieval',
+                    percentage: 7.0,
+                    color: '#10b981',
+                    desc: 'Inicio de la tradición folk/regional con Torfrock (1993), Subway to Sally (1997) e In Extremo (1999).',
+                    bands: ['Torfrock', 'Subway to Sally', 'In Extremo', 'Schandmaul']
+                },
+                {
+                    name: 'Hard Rock & Punk',
+                    shortName: 'Hard Rock / Punk / Esp.',
+                    percentage: 7.0,
+                    color: '#a855f7',
+                    desc: 'Debut de Motörhead en 1997, Scorpions en 1999 y Böhse Onkelz en 1996 y 2004.',
+                    bands: ['Motörhead', 'Scorpions', 'Böhse Onkelz', 'Mambo Kurt', 'Rose Tattoo']
+                }
+            ],
+            modern: [
+                {
+                    name: 'Death Metal & Melodic Death',
+                    shortName: 'Death / Melodic Death',
+                    percentage: 17.5,
+                    color: '#991b1b',
+                    desc: 'Amon Amarth, Arch Enemy e In Flames se consolidan como cabezas de cartel de estadio.',
+                    bands: ['Amon Amarth', 'Arch Enemy', 'In Flames', 'Cannibal Corpse', 'Gojira', 'Carcass']
+                },
+                {
+                    name: 'Heavy Metal & Arena Legends',
+                    shortName: 'Heavy Metal Tradicional',
+                    percentage: 15.5,
+                    color: '#dc2626',
+                    desc: 'Llegada de Iron Maiden (2008) y Judas Priest (2011) junto a las constantes visitas de Saxon y Doro.',
+                    bands: ['Iron Maiden', 'Judas Priest', 'Saxon', 'Doro', 'Accept', 'U.D.O.']
+                },
+                {
+                    name: 'Folk, Viking & Medieval Metal',
+                    shortName: 'Folk / Viking / Medieval',
+                    percentage: 15.0,
+                    color: '#10b981',
+                    desc: 'Gran expansión gracias al área Wackinger Village y el éxito masivo del folk europeo.',
+                    bands: ['In Extremo', 'Subway to Sally', 'Korpiklaani', 'Eluveitie', 'Saltatio Mortis', 'Feuerschwanz']
+                },
+                {
+                    name: 'Power Metal & Symphonic',
+                    shortName: 'Power / Speed Metal',
+                    percentage: 13.0,
+                    color: '#f59e0b',
+                    desc: 'Producciones masivas de Sabaton, Powerwolf, Helloween Pumpkins United y Nightwish.',
+                    bands: ['Sabaton', 'Powerwolf', 'Helloween', 'Blind Guardian', 'Nightwish', 'Avantasia']
+                },
+                {
+                    name: 'Metalcore, Modern & Nu Metal',
+                    shortName: 'Metalcore / Modern / Nu',
+                    percentage: 12.0,
+                    color: '#06b6d4',
+                    desc: 'Fuerte incorporación de bandas modernas como Parkway Drive, Heaven Shall Burn, Slipknot y Korn.',
+                    bands: ['Parkway Drive', 'Heaven Shall Burn', 'Slipknot', 'Korn', 'Machine Head', 'Architects']
+                },
+                {
+                    name: 'Thrash Metal & Groove',
+                    shortName: 'Thrash Metal',
+                    percentage: 11.5,
+                    color: '#ea580c',
+                    desc: 'Presencia permanente de Kreator, Slayer, Megadeth, Anthrax y Sodom.',
+                    bands: ['Kreator', 'Slayer', 'Megadeth', 'Sodom', 'Anthrax', 'Testament']
+                },
+                {
+                    name: 'Black Metal & Extreme',
+                    shortName: 'Black / Extreme Metal',
+                    percentage: 8.5,
+                    color: '#6366f1',
+                    desc: 'Shows especiales de Emperor, Behemoth, Dimmu Borgir y Watain.',
+                    bands: ['Behemoth', 'Dimmu Borgir', 'Emperor', 'Watain', 'Satyricon']
+                },
+                {
+                    name: 'Hard Rock & Especiales',
+                    shortName: 'Hard Rock / Punk / Esp.',
+                    percentage: 7.0,
+                    color: '#a855f7',
+                    desc: 'Grandes giras de Scorpions, Guns N\' Roses, Alice Cooper, Volbeat y Mambo Kurt.',
+                    bands: ['Scorpions', 'Guns N\' Roses', 'Alice Cooper', 'Volbeat', 'Mambo Kurt', 'Motörhead']
+                }
+            ]
+        };
+
+        // ==========================================
+        // 3. DATASET HISTÓRICO DE BANDAS (26 BANDAS)
+        // ==========================================
+        const genreColorMap = {
+            'Heavy Metal': '#dc2626',
+            'Power Metal': '#f59e0b',
+            'Thrash Metal': '#ea580c',
+            'Death Metal': '#991b1b',
+            'Folk Metal': '#10b981',
+            'Hard Rock': '#a855f7'
+        };
+
+        const historicalBands = [
+            {
+                name: 'Mambo Kurt',
+                country: 'Alemania',
+                genre: 'Hard Rock',
+                genreFull: 'Hard Rock / Metal Covers (Esp.)',
+                debut: 1999,
+                count: 23,
+                count90s: 1,
+                countModern: 18,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Récord absoluto de actuaciones en Wacken con su mítico órgano Heimorgel desde 1999.',
+                highlights: '1999, 2002–2019, 2022–2025'
+            },
+            {
+                name: 'Skyline',
+                country: 'Alemania',
+                genre: 'Hard Rock',
+                genreFull: 'Hard Rock / Heavy Metal',
+                debut: 1990,
+                count: 17,
+                count90s: 2,
+                countModern: 15,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Banda cofundadora en 1990 (con Thomas Jensen); abre tradicionalmente el escenario principal.',
+                highlights: '1990, 1991, 2009–2019, 2022–2026'
+            },
+            {
+                name: 'Saxon',
+                country: 'Reino Unido',
+                genre: 'Heavy Metal',
+                genreFull: 'Heavy Metal / NWOBHM',
+                debut: 1992,
+                count: 16,
+                count90s: 3,
+                countModern: 11,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Primer headliner internacional (1992) y la banda extranjera con más shows en la historia de W:O:A.',
+                highlights: '1992, 1998, 2001, 2004, 2007, 2009, 2012, 2016, 2019, 2022, 2025'
+            },
+            {
+                name: 'Doro / Warlock',
+                country: 'Alemania',
+                genre: 'Heavy Metal',
+                genreFull: 'Heavy Metal / Tradicional',
+                debut: 1993,
+                count: 15,
+                count90s: 2,
+                countModern: 11,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'La "Metal Queen" de Wacken; shows aniversario, con orquesta e invitada estelar.',
+                highlights: '1993, 1998, 2000, 2004, 2009, 2013, 2015, 2018, 2023, 2024'
+            },
+            {
+                name: 'Onkel Tom Angelripper',
+                country: 'Alemania',
+                genre: 'Thrash Metal',
+                genreFull: 'Thrash / Beer Metal',
+                debut: 1999,
+                count: 14,
+                count90s: 1,
+                countModern: 10,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Líder de Sodom en su proyecto festivo más querido por los fans alemanes.',
+                highlights: '1999, 2000, 2002, 2004, 2006, 2011, 2014, 2019, 2023'
+            },
+            {
+                name: 'Subway to Sally',
+                country: 'Alemania',
+                genre: 'Folk Metal',
+                genreFull: 'Folk / Medieval Metal',
+                debut: 1997,
+                count: 13,
+                count90s: 1,
+                countModern: 10,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Referentes indiscutibles del Folk/Medieval alemán en Wacken durante casi 30 años.',
+                highlights: '1997, 2000, 2003, 2006, 2008, 2010, 2014, 2018, 2022, 2024'
+            },
+            {
+                name: 'Kreator',
+                country: 'Alemania',
+                genre: 'Thrash Metal',
+                genreFull: 'Thrash Metal',
+                debut: 1995,
+                count: 12,
+                count90s: 2,
+                countModern: 8,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Estandarte máximo del Thrash Metal europeo en Wacken desde 1995.',
+                highlights: '1995, 1996, 2002, 2005, 2008, 2011, 2014, 2017, 2023, 2025'
+            },
+            {
+                name: 'In Extremo',
+                country: 'Alemania',
+                genre: 'Folk Metal',
+                genreFull: 'Medieval / Folk Metal',
+                debut: 1999,
+                count: 12,
+                count90s: 1,
+                countModern: 10,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Pirotecnia, gaitas y metal medieval desde 1999 hasta la actualidad.',
+                highlights: '1999, 2003, 2006, 2009, 2012, 2015, 2018, 2022, 2024'
+            },
+            {
+                name: 'Rage',
+                country: 'Alemania',
+                genre: 'Power Metal',
+                genreFull: 'Power / Speed Metal',
+                debut: 1997,
+                count: 11,
+                count90s: 2,
+                countModern: 8,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Incluye su memorable concierto con la orquesta Lingua Mortis en 2007.',
+                highlights: '1997, 1999, 2003, 2007, 2009, 2013, 2017, 2024'
+            },
+            {
+                name: 'Sodom',
+                country: 'Alemania',
+                genre: 'Thrash Metal',
+                genreFull: 'Thrash Metal',
+                debut: 1997,
+                count: 11,
+                count90s: 1,
+                countModern: 9,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Pilar del Big Four alemán desde su debut en 1997.',
+                highlights: '1997, 2001, 2007, 2011, 2014, 2016, 2018, 2022, 2024'
+            },
+            {
+                name: 'U.D.O.',
+                country: 'Alemania',
+                genre: 'Heavy Metal',
+                genreFull: 'Heavy Metal / Tradicional',
+                debut: 1997,
+                count: 10,
+                count90s: 2,
+                countModern: 7,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Udo Dirkschneider es una figura inseparable del festival tanto con U.D.O. como con Dirkschneider.',
+                highlights: '1997, 1999, 2001, 2005, 2012, 2015, 2018, 2022, 2025'
+            },
+            {
+                name: 'Motörhead',
+                country: 'Reino Unido',
+                genre: 'Hard Rock',
+                genreFull: 'Hard Rock / Heavy Metal',
+                debut: 1997,
+                count: 10,
+                count90s: 1,
+                countModern: 7,
+                decades: ['1990s', '2000s', '2010s'],
+                note: 'Banda de cabecera absoluta entre 1997 y 2015 (incluyendo su histórica última actuación en 2015).',
+                highlights: '1997, 2001, 2004, 2006, 2009, 2011, 2012, 2013, 2014, 2015'
+            },
+            {
+                name: 'Amon Amarth',
+                country: 'Suecia',
+                genre: 'Death Metal',
+                genreFull: 'Melodic Death / Viking',
+                debut: 1999,
+                count: 10,
+                count90s: 1,
+                countModern: 8,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Pasaron de tocar en carpas en 1999 a encabezar los escenarios principales con drakkars.',
+                highlights: '1999, 2004, 2006, 2009, 2012, 2014, 2017, 2019, 2024'
+            },
+            {
+                name: 'Sabaton',
+                country: 'Suecia',
+                genre: 'Power Metal',
+                genreFull: 'Power Metal',
+                debut: 2008,
+                count: 9,
+                count90s: 0,
+                countModern: 9,
+                decades: ['2000s', '2010s', '2020s'],
+                note: 'En 2019 ofrecieron un show histórico ocupando simultáneamente los dos escenarios principales.',
+                highlights: '2008, 2011, 2013, 2015, 2019, 2022, 2026'
+            },
+            {
+                name: 'Blind Guardian',
+                country: 'Alemania',
+                genre: 'Power Metal',
+                genreFull: 'Power & Symphonic Metal',
+                debut: 1992,
+                count: 9,
+                count90s: 2,
+                countModern: 6,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Los bardos de Krefeld: coreados masivamente desde su debut en 1992.',
+                highlights: '1992, 1998, 2002, 2007, 2011, 2016, 2019, 2022, 2024'
+            },
+            {
+                name: 'Arch Enemy',
+                country: 'Suecia',
+                genre: 'Death Metal',
+                genreFull: 'Melodic Death Metal',
+                debut: 2002,
+                count: 9,
+                count90s: 0,
+                countModern: 8,
+                decades: ['2000s', '2010s', '2020s'],
+                note: 'Uno de los actos más recurrentes del metal extremo moderno en Wacken.',
+                highlights: '2002, 2006, 2010, 2014, 2016, 2018, 2022, 2026'
+            },
+            {
+                name: 'Grave Digger',
+                country: 'Alemania',
+                genre: 'Power Metal',
+                genreFull: 'Heavy / Power Metal',
+                debut: 1996,
+                count: 9,
+                count90s: 2,
+                countModern: 5,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Celebraron su 30º aniversario en W:O:A 2010 con un show histórico.',
+                highlights: '1996, 1998, 2001, 2004, 2010, 2015, 2019, 2022, 2025'
+            },
+            {
+                name: 'Torfrock',
+                country: 'Alemania',
+                genre: 'Folk Metal',
+                genreFull: 'Rock Regional / Folk',
+                debut: 1993,
+                count: 9,
+                count90s: 2,
+                countModern: 5,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Héroes locales del norte de Alemania (Schleswig-Holstein) desde 1993.',
+                highlights: '1993, 1998, 2002, 2005, 2009, 2014, 2019, 2023'
+            },
+            {
+                name: 'In Flames',
+                country: 'Suecia',
+                genre: 'Death Metal',
+                genreFull: 'Melodic Death Metal',
+                debut: 1997,
+                count: 9,
+                count90s: 1,
+                countModern: 6,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Embajadores del sonido de Gotemburgo desde 1997 hasta 2026.',
+                highlights: '1997, 2001, 2003, 2007, 2009, 2012, 2015, 2018, 2022, 2026'
+            },
+            {
+                name: 'Helloween',
+                country: 'Alemania',
+                genre: 'Power Metal',
+                genreFull: 'Power Metal',
+                debut: 2004,
+                count: 8,
+                count90s: 0,
+                countModern: 7,
+                decades: ['2000s', '2010s', '2020s'],
+                note: 'Creadores del Power Metal alemán; show histórico Pumpkins United en 2018.',
+                highlights: '2004, 2008, 2011, 2013, 2016, 2018, 2023, 2025'
+            },
+            {
+                name: 'Cannibal Corpse',
+                country: 'EE. UU.',
+                genre: 'Death Metal',
+                genreFull: 'Death Metal',
+                debut: 1998,
+                count: 8,
+                count90s: 1,
+                countModern: 5,
+                decades: ['1990s', '2000s', '2010s', '2020s'],
+                note: 'Máximo referente del Death Metal norteamericano en Wacken desde 1998.',
+                highlights: '1998, 2002, 2004, 2007, 2010, 2015, 2018, 2022'
+            },
+            {
+                name: 'Destruction',
+                country: 'Alemania',
+                genre: 'Thrash Metal',
+                genreFull: 'Thrash Metal',
+                debut: 2000,
+                count: 8,
+                count90s: 0,
+                countModern: 5,
+                decades: ['2000s', '2010s', '2020s'],
+                note: 'Clásico indiscutible del Thrash alemán en las últimas dos décadas.',
+                highlights: '2000, 2002, 2004, 2007, 2010, 2016, 2018, 2022'
+            },
+            {
+                name: 'Nightwish',
+                country: 'Finlandia',
+                genre: 'Power Metal',
+                genreFull: 'Symphonic Metal',
+                debut: 2000,
+                count: 7,
+                count90s: 0,
+                countModern: 4,
+                decades: ['2000s', '2010s', '2020s'],
+                note: 'Incluye su legendario directo "Showtime, Storytime" grabado en W:O:A 2013.',
+                highlights: '2000, 2001, 2005, 2008, 2013, 2018, 2022'
+            },
+            {
+                name: 'Judas Priest',
+                country: 'Reino Unido',
+                genre: 'Heavy Metal',
+                genreFull: 'Heavy Metal',
+                debut: 2011,
+                count: 6,
+                count90s: 0,
+                countModern: 6,
+                decades: ['2010s', '2020s'],
+                note: 'Los "Metal Gods" encabezando múltiples ediciones de la era moderna.',
+                highlights: '2011, 2015, 2018, 2022, 2024, 2026'
+            },
+            {
+                name: 'Iron Maiden',
+                country: 'Reino Unido',
+                genre: 'Heavy Metal',
+                genreFull: 'Heavy Metal / NWOBHM',
+                debut: 2008,
+                count: 4,
+                count90s: 0,
+                countModern: 4,
+                decades: ['2000s', '2010s', '2020s'],
+                note: 'Sus 4 visitas (2008, 2010, 2016, 2023) son consideradas eventos históricos del festival.',
+                highlights: '2008, 2010, 2016, 2023'
+            },
+            {
+                name: 'Wizzard / 5th Avenue',
+                country: 'Alemania',
+                genre: 'Heavy Metal',
+                genreFull: 'Heavy Metal / Hard Rock (1990)',
+                debut: 1990,
+                count: 4,
+                count90s: 2,
+                countModern: 2,
+                decades: ['1990s', '2010s', '2020s'],
+                note: 'Bandas originales del cartel inaugural de 1990 que regresaron en aniversarios especiales.',
+                highlights: '1990, 1991, 2014 (25º Aniv.), 2024'
+            }
+        ];
+
+        // Instancias globales de Chart.js
+        let attendanceChartInstance = null;
+        let weatherChartInstance = null;
+        let weatherDonutChartInstance = null;
+        let genreChartInstance = null;
+        let bandsBarChartInstance = null;
+
+        // Estados de filtros
+        let currentAttendanceMode = 'total';
+        let currentTimeRange = 'all';
+        let currentWeatherFilter = 'all';
+        let currentGenreEra = 'all';
+        let currentGenreChartType = 'doughnut';
+        let currentBandRankFilter = 'all';
+        let chartsInitialized = false;
+
+        // ==========================================
+        // INICIALIZACIÓN SEGURA (DOMContentLoaded & onload)
+        // ==========================================
+        function initializeAllCharts() {
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js no se pudo cargar.');
+                return;
+            }
+            if (chartsInitialized) return;
+            chartsInitialized = true;
+
+            try {
+                Chart.defaults.color = '#94a3b8';
+                Chart.defaults.font.family = "'Inter', sans-serif";
+
+                initAttendanceChart();
+                initWeatherChart();
+                initWeatherDonutChart();
+                initGenreChart();
+                updateGenreDetailBox(0);
+                initBandsBarChart();
+                renderBandsTable(historicalBands);
+            } catch (err) {
+                console.error('Error al inicializar gráficas:', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeAllCharts);
+        window.addEventListener('load', initializeAllCharts);
+
+        // ==========================================
+        // GRÁFICA 1: ASISTENCIA Y CARTEL (1990-2026)
+        // ==========================================
+        function getFilteredHistoricalData() {
+            if (currentTimeRange === 'early') return historicalData.filter(d => d.era === 'early');
+            if (currentTimeRange === 'modern') return historicalData.filter(d => d.era === 'modern');
+            return historicalData;
+        }
+
+        function initAttendanceChart() {
+            const canvas = document.getElementById('attendanceChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dataset = getFilteredHistoricalData();
+
+            const labels = dataset.map(d => d.year);
+            const attendanceValues = dataset.map(d => currentAttendanceMode === 'total' ? d.attendanceTotal : d.ticketsSold);
+            const bandsValues = dataset.map(d => d.bands);
+
+            const barColors = dataset.map(d => {
+                if (d.year === '2020' || d.year === '2021') return 'rgba(100, 116, 139, 0.25)';
+                if (d.year === '2022') return 'rgba(245, 158, 11, 0.9)';
+                if (d.year === '2023' && currentAttendanceMode === 'total') return 'rgba(56, 189, 248, 0.8)';
+                if (parseInt(d.year) <= 1997) return 'rgba(217, 119, 6, 0.8)';
+                return currentAttendanceMode === 'total' ? 'rgba(220, 38, 38, 0.85)' : 'rgba(245, 158, 11, 0.85)';
+            });
+
+            if (attendanceChartInstance) {
+                attendanceChartInstance.destroy();
+            }
+
+            attendanceChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: currentAttendanceMode === 'total' ? 'Asistencia Total / Recinto' : 'Entradas Vendidas (Oficial)',
+                            data: attendanceValues,
+                            backgroundColor: barColors,
+                            borderColor: dataset.map(d => d.year === '2022' ? '#fbbf24' : '#ef4444'),
+                            borderWidth: 1,
+                            borderRadius: 3,
+                            yAxisID: 'y',
+                            order: 2
+                        },
+                        {
+                            label: 'Bandas en Cartel',
+                            data: bandsValues,
+                            type: 'line',
+                            borderColor: '#fbbf24',
+                            backgroundColor: '#fbbf24',
+                            borderWidth: 2.5,
+                            pointRadius: currentTimeRange === 'all' ? 3 : 4.5,
+                            pointHoverRadius: 7,
+                            pointBackgroundColor: '#09090b',
+                            pointBorderColor: '#fbbf24',
+                            pointBorderWidth: 2,
+                            tension: 0.28,
+                            yAxisID: 'y1',
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 16,
+                                color: '#e2e8f0',
+                                font: { size: 12, weight: '600' }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(16, 17, 22, 0.96)',
+                            titleColor: '#fbbf24',
+                            bodyColor: '#f3f4f6',
+                            borderColor: '#dc2626',
+                            borderWidth: 1,
+                            padding: 12,
+                            titleFont: { family: 'Cinzel', size: 15, weight: 'bold' },
+                            callbacks: {
+                                label: function(context) {
+                                    const item = dataset[context.dataIndex];
+                                    if (item.year === '2020' || item.year === '2021') {
+                                        return context.datasetIndex === 0 
+                                            ? ' Evento Presencial Cancelado (COVID-19)' 
+                                            : ' 0 bandas presenciales (Wacken World Wide)';
+                                    }
+                                    const val = context.parsed.y.toLocaleString('es-ES');
+                                    return ` ${context.dataset.label}: ${val}`;
+                                },
+                                afterBody: function(context) {
+                                    const item = dataset[context[0].dataIndex];
+                                    return [
+                                        `──────────────────────────`,
+                                        `Entradas vendidas: ${item.ticketsSold.toLocaleString('es-ES')}`,
+                                        `Asistencia total: ${item.attendanceTotal.toLocaleString('es-ES')}`,
+                                        `Hito: ${item.note}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(39, 42, 53, 0.45)' },
+                            ticks: { color: '#cbd5e1', font: { size: 11 }, maxRotation: 45, minRotation: 0 }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Asistentes / Entradas', color: '#ef4444', font: { size: 11, weight: 'bold' } },
+                            grid: { color: 'rgba(39, 42, 53, 0.45)' },
+                            suggestedMax: currentTimeRange === 'early' ? 52000 : 110000,
+                            ticks: { callback: v => v >= 1000 ? (v / 1000) + 'k' : v }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Número de Bandas', color: '#fbbf24', font: { size: 11, weight: 'bold' } },
+                            grid: { drawOnChartArea: false },
+                            suggestedMax: currentTimeRange === 'early' ? 95 : 250
+                        }
+                    }
+                }
+            });
+        }
+
+        function setTimeRange(range) {
+            currentTimeRange = range;
+            ['all', 'early', 'modern'].forEach(r => {
+                const btn = document.getElementById(`btn-range-${r}`);
+                btn.className = r === range
+                    ? 'px-2.5 py-1.5 rounded-md text-xs font-semibold transition bg-amber-500 text-black shadow cursor-pointer'
+                    : 'px-2.5 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer';
+            });
+            initAttendanceChart();
+        }
+
+        function setAttendanceMode(mode) {
+            currentAttendanceMode = mode;
+            const btnTotal = document.getElementById('btn-mode-total');
+            const btnSold = document.getElementById('btn-mode-sold');
+            if (mode === 'total') {
+                btnTotal.className = 'px-2.5 py-1.5 rounded-md text-xs font-semibold transition bg-red-600 text-white shadow cursor-pointer';
+                btnSold.className = 'px-2.5 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer';
+            } else {
+                btnSold.className = 'px-2.5 py-1.5 rounded-md text-xs font-semibold transition bg-amber-500 text-black shadow cursor-pointer';
+                btnTotal.className = 'px-2.5 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer';
+            }
+            initAttendanceChart();
+        }
+
+        // ==========================================
+        // GRÁFICA 2: METEOROLOGÍA RAIN OR SHINE
+        // ==========================================
+        function getFilteredWeatherData() {
+            if (currentWeatherFilter === 'rain') return historicalData.filter(d => d.rained === true);
+            if (currentWeatherFilter === 'dry') return historicalData.filter(d => d.rained === false);
+            return historicalData;
+        }
+
+        function initWeatherChart() {
+            const canvas = document.getElementById('weatherChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dataset = getFilteredWeatherData();
+
+            const labels = dataset.map(d => d.year);
+            const values = dataset.map(d => d.weatherLevel === 0 ? 0.25 : d.weatherLevel);
+
+            const bgColors = dataset.map(d => {
+                if (d.weatherLevel === 0) return 'rgba(51, 65, 85, 0.45)';
+                if (d.weatherLevel === 1) return '#eab308';
+                if (d.weatherLevel === 2) return '#38bdf8';
+                if (d.weatherLevel === 3) return '#2563eb';
+                return '#dc2626';
+            });
+
+            const borderColors = dataset.map(d => {
+                if (d.weatherLevel === 4) return '#fbbf24';
+                if (d.weatherLevel === 0) return '#475569';
+                return 'rgba(9, 9, 11, 0.8)';
+            });
+
+            if (weatherChartInstance) {
+                weatherChartInstance.destroy();
+            }
+
+            weatherChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Nivel Climático',
+                        data: values,
+                        backgroundColor: bgColors,
+                        borderColor: borderColors,
+                        borderWidth: dataset.map(d => d.weatherLevel === 4 ? 2 : 1),
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(16, 17, 22, 0.97)',
+                            titleColor: '#fbbf24',
+                            bodyColor: '#f3f4f6',
+                            borderColor: '#38bdf8',
+                            borderWidth: 1,
+                            padding: 12,
+                            titleFont: { family: 'Cinzel', size: 15, weight: 'bold' },
+                            callbacks: {
+                                title: ctx => `W:O:A ${dataset[ctx[0].dataIndex].year}`,
+                                label: ctx => {
+                                    const item = dataset[ctx.dataIndex];
+                                    if (item.weatherLevel === 0) return ' 🚫 EVENTO CANCELADO (COVID-19)';
+                                    return item.rained ? ' 🌧️ SÍ LLOVIÓ' : ' ☀️ NO LLOVIÓ (Seco)';
+                                },
+                                afterLabel: ctx => {
+                                    const item = dataset[ctx.dataIndex];
+                                    return [`Estado: ${item.weatherLabel}`, `──────────────────────────`, `${item.weatherNote}`];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(39, 42, 53, 0.45)' },
+                            ticks: { color: '#cbd5e1', font: { size: 11 }, maxRotation: 45, minRotation: 0 }
+                        },
+                        y: {
+                            min: 0,
+                            max: 4.3,
+                            grid: { color: 'rgba(39, 42, 53, 0.45)' },
+                            ticks: {
+                                stepSize: 1,
+                                color: '#94a3b8',
+                                font: { size: 11, weight: '600' },
+                                callback: v => ({ 0: 'Cancelado', 1: '☀️ Seco / Polvo', 2: '🌦️ Lluvia Ligera', 3: '🌧️ Lluvia Intensa', 4: '⛈️ Diluvio Histórico' }[v] || '')
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initWeatherDonutChart() {
+            const canvas = document.getElementById('weatherDonutChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (weatherDonutChartInstance) weatherDonutChartInstance.destroy();
+
+            weatherDonutChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Shine (Seco / Polvo)', 'Rain (Lluvia / Barro)'],
+                    datasets: [{
+                        data: [20, 15],
+                        backgroundColor: ['#eab308', '#2563eb'],
+                        borderColor: '#111216',
+                        borderWidth: 3,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '64%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(16, 17, 22, 0.96)',
+                            titleColor: '#fbbf24',
+                            borderColor: '#38bdf8',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: ctx => ` ${ctx.label}: ${ctx.parsed} ed. (${((ctx.parsed / 35) * 100).toFixed(1)}%)`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function setWeatherFilter(filter) {
+            currentWeatherFilter = filter;
+            ['all', 'rain', 'dry'].forEach(f => {
+                const btn = document.getElementById(`btn-weather-${f}`);
+                if (f === filter) {
+                    const activeColor = f === 'dry' ? 'bg-amber-500 text-black' : 'bg-sky-600 text-white';
+                    btn.className = `px-3 py-1.5 rounded-md text-xs font-semibold transition ${activeColor} shadow cursor-pointer`;
+                } else {
+                    btn.className = 'px-3 py-1.5 rounded-md text-xs font-semibold transition text-gray-400 hover:text-white cursor-pointer';
+                }
+            });
+            initWeatherChart();
+        }
+
+        // ==========================================
+        // GRÁFICA 3: DISTRIBUCIÓN DE SUBGÉNEROS MUSICALES
+        // ==========================================
+        function initGenreChart() {
+            const canvas = document.getElementById('genreChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const currentGenres = genresByEra[currentGenreEra];
+            const isDoughnut = currentGenreChartType === 'doughnut';
+
+            if (genreChartInstance) {
+                genreChartInstance.destroy();
+            }
+
+            genreChartInstance = new Chart(ctx, {
+                type: currentGenreChartType,
+                data: {
+                    labels: currentGenres.map(g => `${g.shortName} (${g.percentage}%)`),
+                    datasets: [{
+                        label: '% del Cartel',
+                        data: currentGenres.map(g => g.percentage),
+                        backgroundColor: currentGenres.map(g => g.color),
+                        borderColor: '#111216',
+                        borderWidth: isDoughnut ? 3 : 1,
+                        borderRadius: isDoughnut ? 0 : 5,
+                        hoverOffset: isDoughnut ? 10 : 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: isDoughnut ? 'x' : 'y',
+                    cutout: isDoughnut ? '56%' : undefined,
+                    onHover: (event, elements) => {
+                        if (elements && elements.length > 0) {
+                            updateGenreDetailBox(elements[0].index);
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements && elements.length > 0) {
+                            updateGenreDetailBox(elements[0].index);
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: isDoughnut,
+                            position: window.innerWidth < 640 ? 'bottom' : 'right',
+                            labels: {
+                                color: '#e2e8f0',
+                                boxWidth: 12,
+                                padding: 10,
+                                font: { size: 11.5, weight: '500' }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(16, 17, 22, 0.97)',
+                            titleColor: '#fbbf24',
+                            bodyColor: '#f3f4f6',
+                            borderColor: '#dc2626',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: ctx => ` Participación en cartel: ${ctx.parsed}%`
+                            }
+                        }
+                    },
+                    scales: isDoughnut ? {} : {
+                        x: {
+                            beginAtZero: true,
+                            max: 30,
+                            grid: { color: 'rgba(39, 42, 53, 0.45)' },
+                            ticks: { color: '#94a3b8', callback: v => v + '%' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: '#f3f4f6', font: { size: 11.5, weight: '600' } }
+                        }
+                    }
+                }
+            });
+
+            renderGenreQuickPills();
+        }
+
+        function renderGenreQuickPills() {
+            const container = document.getElementById('genre-quick-pills');
+            if (!container) return;
+            const currentGenres = genresByEra[currentGenreEra];
+            container.innerHTML = currentGenres.map((g, idx) => `
+                <button onclick="updateGenreDetailBox(${idx})" class="px-2 py-1 rounded text-[11px] font-medium bg-wacken-card hover:bg-red-950/60 text-gray-300 hover:text-white border border-wacken-border transition flex items-center gap-1.5 cursor-pointer">
+                    <span class="w-2 h-2 rounded-full inline-block" style="background-color:${g.color}"></span>
+                    <span>${g.shortName}</span>
+                </button>
+            `).join('');
+        }
+
+        function setGenreEra(era) {
+            currentGenreEra = era;
+            ['all', 'classic', 'modern'].forEach(e => {
+                const btn = document.getElementById(`btn-genre-era-${e}`);
+                btn.className = e === era
+                    ? 'px-2.5 py-1.5 rounded-md text-xs font-semibold bg-red-600 text-white shadow transition cursor-pointer'
+                    : 'px-2.5 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer';
+            });
+            initGenreChart();
+            updateGenreDetailBox(0);
+        }
+
+        function setGenreChartType(type) {
+            currentGenreChartType = type;
+            const btnDoughnut = document.getElementById('btn-genre-view-doughnut');
+            const btnBar = document.getElementById('btn-genre-view-bar');
+
+            if (type === 'doughnut') {
+                btnDoughnut.className = 'px-2.5 py-1.5 rounded-md text-xs font-semibold bg-amber-500 text-black shadow transition cursor-pointer';
+                btnBar.className = 'px-2.5 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer';
+            } else {
+                btnBar.className = 'px-2.5 py-1.5 rounded-md text-xs font-semibold bg-amber-500 text-black shadow transition cursor-pointer';
+                btnDoughnut.className = 'px-2.5 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer';
+            }
+            initGenreChart();
+        }
+
+        function updateGenreDetailBox(index) {
+            const currentGenres = genresByEra[currentGenreEra];
+            const genre = currentGenres[index] || currentGenres[0];
+
+            document.getElementById('genre-detail-title').textContent = genre.name;
+            document.getElementById('genre-detail-title').style.color = genre.color === '#991b1b' ? '#f87171' : genre.color;
+            document.getElementById('genre-detail-pct').textContent = `${genre.percentage}% del cartel`;
+            document.getElementById('genre-detail-desc').textContent = genre.desc;
+
+            const bandsContainer = document.getElementById('genre-detail-bands');
+            bandsContainer.innerHTML = genre.bands.map(band => `
+                <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-wacken-card text-gray-200 border border-wacken-border hover:border-amber-500/50 transition">
+                    ${band}
+                </span>
+            `).join('');
+        }
+
+        // ==========================================
+        // GRÁFICA 4: FRECUENCIA DE PARTICIPACIÓN DE BANDAS
+        // ==========================================
+        // Plugin ligero integrado para dibujar el número exacto al final de cada barra horizontal
+        const barValueLabelsPlugin = {
+            id: 'barValueLabels',
+            afterDatasetsDraw(chart) {
+                if (chart.config.options.indexAxis !== 'y') return;
+                const { ctx } = chart;
+                ctx.save();
+                ctx.font = "bold 11.5px 'JetBrains Mono', monospace";
+                ctx.fillStyle = '#fbbf24';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+
+                chart.getDatasetMeta(0).data.forEach((bar, index) => {
+                    const value = chart.data.datasets[0].data[index];
+                    if (value !== undefined && value !== null) {
+                        ctx.fillText(`${value} shows`, bar.x + 8, bar.y);
+                    }
+                });
+                ctx.restore();
+            }
+        };
+
+        function getFilteredBandRanking() {
+            if (currentBandRankFilter === '90s') {
+                return [...historicalBands]
+                    .filter(b => b.count90s > 0)
+                    .sort((a, b) => b.count90s - a.count90s)
+                    .slice(0, 15)
+                    .map(b => ({ ...b, displayCount: b.count90s }));
+            }
+            if (currentBandRankFilter === 'modern') {
+                return [...historicalBands]
+                    .filter(b => b.countModern > 0)
+                    .sort((a, b) => b.countModern - a.countModern)
+                    .slice(0, 16)
+                    .map(b => ({ ...b, displayCount: b.countModern }));
+            }
+            return [...historicalBands]
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 16)
+                .map(b => ({ ...b, displayCount: b.count }));
+        }
+
+        function initBandsBarChart() {
+            const canvas = document.getElementById('bandsBarChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rankingData = getFilteredBandRanking();
+            const maxVal = Math.max(...rankingData.map(b => b.displayCount)) + 4;
+
+            if (bandsBarChartInstance) {
+                bandsBarChartInstance.destroy();
+            }
+
+            bandsBarChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: rankingData.map((b, i) => `#${i + 1}  ${b.name}`),
+                    datasets: [{
+                        label: 'Apariciones en W:O:A',
+                        data: rankingData.map(b => b.displayCount),
+                        backgroundColor: rankingData.map(b => genreColorMap[b.genre] || '#dc2626'),
+                        borderColor: '#09090b',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        barPercentage: 0.78
+                    }]
+                },
+                plugins: [barValueLabelsPlugin],
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(16, 17, 22, 0.97)',
+                            titleColor: '#fbbf24',
+                            bodyColor: '#f3f4f6',
+                            borderColor: '#dc2626',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const band = rankingData[context.dataIndex];
+                                    return ` ${band.displayCount} actuaciones • Subgénero: ${band.genreFull}`;
+                                },
+                                afterLabel: function(context) {
+                                    const band = rankingData[context.dataIndex];
+                                    return [
+                                        `Debut en Wacken: ${band.debut} (${band.country})`,
+                                        `Ediciones clave: ${band.highlights}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: maxVal,
+                            grid: { color: 'rgba(39, 42, 53, 0.45)' },
+                            ticks: {
+                                stepSize: currentBandRankFilter === '90s' ? 1 : 3,
+                                color: '#94a3b8'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Número de ediciones participadas en Wacken Open Air',
+                                color: '#94a3b8',
+                                font: { size: 11, weight: '600' }
+                            }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#f3f4f6',
+                                font: { weight: '600', size: 11.5 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function setBandRankingFilter(filter) {
+            currentBandRankFilter = filter;
+            ['all', '90s', 'modern'].forEach(f => {
+                const btn = document.getElementById(`btn-rank-${f}`);
+                btn.className = f === filter
+                    ? 'px-3 py-1.5 rounded-md text-xs font-semibold bg-amber-500 text-black shadow transition cursor-pointer'
+                    : 'px-3 py-1.5 rounded-md text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer';
+            });
+            initBandsBarChart();
+        }
+
+        // ==========================================
+        // 5. TABLA BUSCABLE DE ARCHIVO HISTÓRICO
+        // ==========================================
+        function renderBandsTable(data) {
+            const tbody = document.getElementById('bands-table-body');
+            const noResults = document.getElementById('no-results-msg');
+            if (!tbody) return;
+
+            if (data.length === 0) {
+                tbody.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+
+            tbody.innerHTML = data.map((band, index) => {
+                const rankBadge = index < 3 
+                    ? `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 font-mono font-bold border border-amber-500/40">${index + 1}</span>`
+                    : `<span class="text-gray-400 font-mono pl-2">${index + 1}</span>`;
+
+                const debutBadgeClass = band.debut <= 1995 
+                    ? 'bg-amber-950/80 text-amber-300 border-amber-700/50' 
+                    : band.debut <= 2000 
+                        ? 'bg-red-950/80 text-red-300 border-red-700/50'
+                        : 'bg-wacken-black text-gray-300 border-wacken-border';
+
+                const dotColor = genreColorMap[band.genre] || '#dc2626';
+
+                return `
+                    <tr class="hover:bg-white/[0.03] transition-colors">
+                        <td class="py-3.5 px-3 sm:px-4">${rankBadge}</td>
+                        <td class="py-3.5 px-3 sm:px-4">
+                            <div class="font-bold text-white text-sm">${band.name}</div>
+                            <div class="text-xs text-gray-400 max-w-md">${band.note}</div>
+                        </td>
+                        <td class="py-3.5 px-3 sm:px-4 text-gray-300 whitespace-nowrap">
+                            ${band.country}
+                        </td>
+                        <td class="py-3.5 px-3 sm:px-4">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-wacken-black text-gray-200 border border-wacken-border whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full" style="background-color:${dotColor}"></span>
+                                ${band.genreFull}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-3 sm:px-4 text-center">
+                            <span class="px-2 py-0.5 text-xs font-mono rounded border ${debutBadgeClass}">
+                                ${band.debut}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-3 sm:px-4 text-center">
+                            <span class="font-display text-base sm:text-lg font-extrabold text-amber-400">${band.count}</span>
+                        </td>
+                        <td class="py-3.5 px-3 sm:px-4 text-xs font-mono text-gray-300">
+                            ${band.highlights}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterBandsTable() {
+            const searchTerm = document.getElementById('band-search').value.toLowerCase().trim();
+            const selectedGenre = document.getElementById('genre-filter').value;
+            const selectedDecade = document.getElementById('decade-filter').value;
+
+            const filtered = historicalBands.filter(band => {
+                const matchesSearch = 
+                    band.name.toLowerCase().includes(searchTerm) ||
+                    band.country.toLowerCase().includes(searchTerm) ||
+                    band.note.toLowerCase().includes(searchTerm) ||
+                    band.highlights.toLowerCase().includes(searchTerm) ||
+                    band.debut.toString().includes(searchTerm);
+
+                const matchesGenre = selectedGenre === 'ALL' || band.genre === selectedGenre;
+                const matchesDecade = selectedDecade === 'ALL' || band.decades.includes(selectedDecade);
+
+                return matchesSearch && matchesGenre && matchesDecade;
+            });
+
+            renderBandsTable(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('band-search').value = '';
+            document.getElementById('genre-filter').value = 'ALL';
+            document.getElementById('decade-filter').value = 'ALL';
+            renderBandsTable(historicalBands);
+        }
+
+        // ==========================================
+        // EXPORTAR CSV COMPLETO (1990-2026)
+        // ==========================================
+        function exportToCSV() {
+            let csvContent = "Año,Era,Asistencia_Total_Recinto,Entradas_Vendidas,Bandas_en_Cartel,Llovio,Nivel_Clima,Estado_Meteorologico,Hito_Historico\n";
+            historicalData.forEach(row => {
+                const eraLabel = row.era === 'early' ? 'Era Fundacional (1990-2005)' : 'Era Moderna (2006-2026)';
+                const rainedText = row.rained === null ? 'Cancelado' : (row.rained ? 'SI' : 'NO');
+                csvContent += `${row.year},"${eraLabel}",${row.attendanceTotal},${row.ticketsSold},${row.bands},"${rainedText}",${row.weatherLevel},"${row.weatherLabel}","${row.note.replace(/"/g, '""')}"\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "Wacken_Open_Air_Historia_Completa_1990_2026.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("CSV histórico completo (1990–2026) descargado.");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-banner');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
